@@ -5,7 +5,9 @@
 	"authors": [
 		{
 			"name": "Darío Candotti",
-			"email": "dario.candotti@gmail.com"
+			"email": "dario.candotti@gmail.com",
+			"homepage": "kamishimoemon.dev",
+			"role": "developer"
 		}
 	],
 	"require": {

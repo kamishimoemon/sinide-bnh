@@ -1,0 +1,28 @@
+{
+	"name": "kamishimoemon/sinide-bnh",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Darío Candotti",
+			"email": "dario.candotti@gmail.com"
+		}
+	],
+	"require": {
+		"php": ">=7.3"
+	},
+	"autoload": {
+		"psr-4": {
+			"sinide\\bnh\\": "src/",
+			"test\\sinide\\bnh\\": "test/"
+		}
+	},
+	"scripts": {
+		"test": [
+			"punit"
+		]
+	},
+	"bin": [
+		"bin/bnh"
+	]
+}

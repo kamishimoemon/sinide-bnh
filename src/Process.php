@@ -1,10 +1,18 @@
 <?php
 namespace sinide\bnh;
 
+use sinide\bnh\io\Path;
+use sinide\bnh\io\ZipPath;
+use sinide\bnh\io\BnhFile;
+use sinide\bnh\persistence\Database;
+use sinide\bnh\exception\NoFileToProcess;
+
 class Process
 {
+	private $db;
 	private $id;
 	private $state;
+	private $stateChange;
 
 	public function __construct (Database $db)
 	{
@@ -23,18 +31,23 @@ class Process
 			LIMIT 1
 		");
 
-		if (!$rs) throw new NoHayArchivoParaImportar();
+		if (!$rs) throw new NoFileToProcess();
 
+		$this->db = $db;
 		$this->id = intval($rs["id_importacion"]);
-		$this->state = new EnPreImportacion(
+		$this->state = new PreProcessState(
 			$this,
-			new ArchivoBnh(
+			new BnhFile(
 				new ZipPath(
 					new Path($rs["archivo_upload"]),
 					new Path($rs["nombre_archivo"])
 				)
-			)
+			),
+			$db
 		);
+
+		$sql = "UPDATE importaciones SET id_importacion_estado = $1 WHERE id_importacion = $2";
+		$this->stateChange = $db->prepare($sql);
 	}
 
 	public function id (): int
@@ -44,12 +57,13 @@ class Process
 
 	public function run (): void
 	{
-		$this->state->procesar();
+		$this->state->run();
 	}
 
-	public function cambioEstado (EstadoImportacion $state): void
+	public function setState (ProcessState $newState): void
 	{
-		$this->state = $state;
-		$state->cambioEstado();
+		$this->stateChange->run([$newState->id(), $this->id]);
+		$this->state = $newState;
+		$newState->run();
 	}
 }

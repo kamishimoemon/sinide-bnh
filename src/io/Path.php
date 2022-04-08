@@ -1,5 +1,5 @@
 <?php
-namespace sinide\bnh;
+namespace sinide\bnh\io;
 
 class Path
 {

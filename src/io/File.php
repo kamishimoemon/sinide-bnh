@@ -1,13 +1,16 @@
 <?php
-namespace sinide\bnh;
+namespace sinide\bnh\io;
 
 use fopen;
 use fclose;
 
 class File
 {
+	const READ_ONLY = 'r';
+	const WRITE_ONLY = 'w';
+
 	private $filename;
-	private $pointer;
+	protected $pointer;
 
 	public function __construct (Path $filename)
 	{
@@ -19,9 +22,9 @@ class File
 		return file_exists($this->filename);
 	}
 
-	public function open (): void
+	public function open (string $mode = File::READ_ONLY): void
 	{
-		$this->pointer = fopen($this->filename, "w");
+		$this->pointer = fopen($this->filename, $mode);
 	}
 
 	public function write (string $data): void

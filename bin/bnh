@@ -4,22 +4,27 @@ $autoloader = dirname(__DIR__) . "/vendor/autoload.php";
 if (!file_exists($autoloader)) die("Couldn't find autoloader at {$autoloader}.\nTry running composer dump-autoload");
 require_once($autoloader);
 
+set_exception_handler(function (Throwable $ex) {
+	if ($ex instanceof \sinide\bnh\ProcessException) $ex->catch();
+	throw $ex;
+});
+
 define("HOME_DIR", $_SERVER["HOME"]);
 
 $ini_filename = HOME_DIR . '/bnh.ini';
 $config = parse_ini_file($ini_filename, true);
-if ($config === false) die("No se pudo cargar configuracion en: {$ini_filename}");
+if ($config === false) die("Couldn't load configuration at: {$ini_filename}");
 
 $stopwatch = new \sinide\bnh\util\Stopwatch();
 $stopwatch->start();
 
-(new \sinide\bnh\LockFile(
-	new \sinide\bnh\Path($config["proceso"]["pathLock"])
+(new \sinide\bnh\io\LockFile(
+	new \sinide\bnh\io\Path($config["proceso"]["pathLock"])
 ))->lock(
 	new \sinide\bnh\Process(
-		new \sinide\bnh\BaseDatosIni($config["dbNegocio"])
+		new \sinide\bnh\persistence\pg\IniDatabase($config["dbNegocio"])
 	)
 );
 
 $time = $stopwatch->stop();
-echo "El tiempo de ejecución del archivo ha sido de " . $time . " segundos";
+echo "El tiempo de ejecución ha sido de " . $time . " segundos";

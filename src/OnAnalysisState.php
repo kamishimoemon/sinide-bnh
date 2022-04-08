@@ -27,7 +27,7 @@ class OnAnalysisState
 	{
 		foreach ($this->file as $nro_linea => $alumno)
 		{
-			$alumno->run($nro_linea, $db);
+			$alumno->run($nro_linea, $this->db);
 		}
 	}
 }

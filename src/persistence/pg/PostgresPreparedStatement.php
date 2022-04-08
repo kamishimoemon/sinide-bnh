@@ -1,6 +1,7 @@
 <?php
 namespace sinide\bnh\persistence\pg;
 
+use Exception;
 use sinide\bnh\persistence\PreparedStatement;
 
 class PostgresPreparedStatement

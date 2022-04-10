@@ -25,9 +25,14 @@ class OnAnalysisState
 
 	public function run (): void
 	{
-		foreach ($this->file as $nro_linea => $alumno)
+		foreach ($this->file as $student)
 		{
-			$alumno->run($nro_linea, $this->db);
+			$student->validate($this->process, $this->db);
 		}
+
+		//$this->process->registrarErrores();
+		//$this->process->procesar();
+		//$this->process->rectificarDatos();
+		//$this->process->controlarDuplicados();
 	}
 }

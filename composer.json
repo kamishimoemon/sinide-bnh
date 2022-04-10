@@ -13,6 +13,9 @@
 	"require": {
 		"php": ">=7.3"
 	},
+	"require-dev": {
+		"phpunit/phpunit": "^9.5"
+	},
 	"autoload": {
 		"psr-4": {
 			"sinide\\bnh\\": "src/",
@@ -21,7 +24,10 @@
 	},
 	"scripts": {
 		"test": [
-			"punit"
+			"phpunit test"
+		],
+		"testdox": [
+			"phpunit test --testdox"
 		]
 	},
 	"bin": [

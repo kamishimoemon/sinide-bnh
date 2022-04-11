@@ -22,6 +22,11 @@ class File
 		return file_exists($this->filename);
 	}
 
+	public function create (): bool
+	{
+		return touch($this->filename);
+	}
+
 	public function open (string $mode = File::READ_ONLY): void
 	{
 		$this->pointer = fopen($this->filename, $mode);

@@ -33,7 +33,7 @@ class BnhIterator
 		$line = $this->it->current();
 		$lineNumber = $this->it->key();
 
-		if (count($fila) == 22) return new InvalidStudent($line, $lineNumber);
+		if (count($line) == 22) return new InvalidStudent($line, $lineNumber);
 
 		return new DefaultStudent($line, $lineNumber);
 	}

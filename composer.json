@@ -24,7 +24,7 @@
 	},
 	"scripts": {
 		"test": [
-			"phpunit test"
+			"phpunit test --color --stop-on-failure"
 		],
 		"testdox": [
 			"phpunit test --testdox"

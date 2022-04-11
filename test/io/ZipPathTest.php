@@ -8,12 +8,15 @@ use PHPUnit\Framework\TestCase;
 class ZipPathTest
 	extends TestCase
 {
-	public function testPathShoudlStartWithZipScheme (): void
+	/**
+	 * @test
+	 */
+	public function pathShoudlStartWithZipScheme (): void
 	{
 		$path = strval(new ZipPath(
 			new Path('/usr/home'),
 			new Path('somefile.txt')
 		));
-		$this->assertSame('zip://', $path);
+		$this->assertStringStartsWith('zip://', $path);
 	}
 }

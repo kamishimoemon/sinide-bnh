@@ -2,6 +2,7 @@
 namespace sinide\bnh;
 
 use sinide\bnh\persistence\Table;
+use sinide\bnh\persistence\Copy;
 
 class SimpleProcess
 	implements Process
@@ -19,11 +20,34 @@ class SimpleProcess
 
 	function run (): void
 	{
+		$studentsCopy = new Copy($this->studentsTable);
 		foreach ($this->students as $student)
 		{
 			try
 			{
 				$student->validate();
+				$studentsCopy->add([
+					'id' => $student->id(),
+					'apellidos' => $student->lastName(),
+					'nombres' => $student->firstName(),
+					'tipo_documento' => $student->identificationType(),
+					'numero_documento' => $student->identificationNumber(),
+					'cuil' => $student->cuil(),
+					'fecha_nacimiento' => $student->birthdate(),
+					'sexo' => $student->gender(),
+					'pais_nacimiento' => $student->countryOfBirth(),
+					'provincia_nacimiento' => $student->stateOfBirth(),
+					'lugar_nacimiento' => $student->birthplace(),
+					'nacionalidad' => $student->nacionality(),
+					'pais_residencia' => $student->countryOfResidence(),
+					'provincia_residencia' => $student->stateOfResidence(),
+					'localidad_residencia' => $student->countyOfResidence(),
+					'cueanexo' => $student->cueanexo(),
+					'oferta_padron' => $student->ofertaPadron(),
+					'duracion_oferta' => $student->duration(),
+					'grado' => $student->schoolGrade(),
+					'orientacion' => $student->specialization(),
+				]);
 			}
 			catch (ValidationError $ex)
 			{
@@ -36,27 +60,6 @@ class SimpleProcess
 			}
 		}
 
-		$this->studentsTable->copy([[
-			'id' => 'id',
-			'apellidos' => 'apellidos',
-			'nombres' => 'nombres',
-			'tipo_documento' => 'tipo_documento',
-			'numero_documento' => 'numero_documento',
-			'cuil' => 'cuil',
-			'fecha_nacimiento' => 'fecha_nacimiento',
-			'sexo' => 'sexo',
-			'pais_nacimiento' => 'pais_nacimiento',
-			'provincia_nacimiento' => 'provincia_nacimiento',
-			'lugar_nacimiento' => 'lugar_nacimiento',
-			'nacionalidad' => 'nacionalidad',
-			'pais_residencia' => 'pais_residencia',
-			'provincia_residencia' => 'provincia_residencia',
-			'localidad_residencia' => 'localidad_residencia',
-			'cueanexo' => 'cueanexo',
-			'oferta_padron' => 'oferta_padron',
-			'duracion_oferta' => 'duracion_oferta',
-			'grado' => 'grado',
-			'orientacion' => 'orientacion',
-		]]);
+		$studentsCopy->save();
 	}
 }

@@ -8,16 +8,35 @@ class SimpleProcess
 {
 	private $students;
 	private $studentsTable;
+	private $errorsTable;
 
-	public function __construct (iterable $students, Table $studentsTable)
+	public function __construct (iterable $students, Table $studentsTable, Table $errorsTable)
 	{
 		$this->students = $students;
 		$this->studentsTable = $studentsTable;
+		$this->errorsTable = $errorsTable;
 	}
 
 	function run (): void
 	{
-		$this->studentsTable->insert([
+		foreach ($this->students as $student)
+		{
+			try
+			{
+				$student->validate();
+			}
+			catch (ValidationError $ex)
+			{
+				$this->errorsTable->copy([[
+					'fila' => 'fila',
+					'columna' => 'columna',
+					'mensaje' => 'mensaje',
+					'tipo' => 'tipo',
+				]]);
+			}
+		}
+
+		$this->studentsTable->copy([[
 			'id' => 'id',
 			'apellidos' => 'apellidos',
 			'nombres' => 'nombres',
@@ -38,6 +57,6 @@ class SimpleProcess
 			'duracion_oferta' => 'duracion_oferta',
 			'grado' => 'grado',
 			'orientacion' => 'orientacion',
-		]);
+		]]);
 	}
 }

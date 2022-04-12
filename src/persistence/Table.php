@@ -3,5 +3,5 @@ namespace sinide\bnh\persistence;
 
 interface Table
 {
-	function insert (array $values): void;
+	function copy (array $values): void;
 }

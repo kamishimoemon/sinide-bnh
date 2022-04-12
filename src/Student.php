@@ -5,7 +5,7 @@ use sinide\bnh\persistence\Database;
 
 class Student
 {
-	function validate (Process $process, Database $db): void
+	function validate (): void
 	{
 	}
 }

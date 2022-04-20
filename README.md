@@ -1,7 +1,7 @@
 # sinide-bnh
 
 ## TODOS:
- - [ ] Add a timer
+ - [X] Add a timer
  - [ ] Read configuration from .ini file
  - [ ] Processes should run one at a time
  - [ ] At the start of process, it's state should change to "on analysis"

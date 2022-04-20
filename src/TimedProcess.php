@@ -9,10 +9,10 @@ class TimedProcess
 	private $process;
 	private $stopwatch;
 
-	public function __construct (Process $process)
+	public function __construct (Process $process, Stopwatch $stopwatch)
 	{
 		$this->process = $process;
-		$this->stopwatch = new Stopwatch();
+		$this->stopwatch = $stopwatch;
 	}
 
 	public function run (): void

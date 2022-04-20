@@ -1,0 +1,55 @@
+@TODO: mover este documento al README del proyecto
+
+empezar cronometro
+
+// PASO 1: Busco si existe un proceso ejecutandose
+leer conf.ini
+chequear .lock (si existe, fin)
+
+// PASO 2: Busco si existe algún proceso de importación para ejecutar
+buscar siguiente importacion (si no hay, fin)
+
+// PASO 3: Genero lockeo para procesar importación
+crear y abrir .lock, escribir id de importacion, cerrar .lock
+cambiar estado de importacion a "En Proceso de Análisis" (1) (si male sal, fin)
+generar nombre de la tabla temporal
+generar nombre de la tabla temporal de errores
+generar nombre de la tabla de rectificados
+crear tablas temporales (si male sal, fin)
+
+// PASO 4: Realizo control y carga de archivos a procesar
+descomprimir lote
+cargar lote en memoria (si male sal o no hay datos, fin)
+
+// PASO 5: Realizo validaciones y procesamiento de los datos extraídos
+actualizar registros procesados con la cantidad de registros en lote
+validar lote (si hay errores, se registran los mismos y se actualiza cantidad de registros no ok, fin)
+
+// PASO 6: Realizo el importado a una tabla temporal sin restricciones
+se inserta lote a tabla temporal
+
+// PASO +0.5: Rectificacion de datos
+rectificar datos
+
+// PASO 7: Control de duplicidad de datos en el lote insertado
+se valida que no haya duplicados dentro del lote
+
+// PASO 8: Control de duplicidad de datos y volcado a tabla final
+se valida que no haya duplicados con todo lo importado en importaciones anteriores
+se inserta lote en tabla definitiva
+
+// PASO 9: En caso de exito, se deben eliminar las tablas temporales creadas
+se actualiza registros ok
+se eliminan tablas temporales
+si hay advertencias:
+	se actualiza registros warning
+	se registran las mismas
+	se cambia el estado de importacion a "Importado con Advertencias" (5)
+si no hay advertencias, se cambia el estado de importacion a "Importado OK" (6)
+
+// PASO +0.5: Deshaciendo rectificacion de datos
+si se rectifico y hubo errores en PASO 7 o PASO 8, se deshace rectificacion
+
+// PASO 10: Liberar el lockeo del archivo temporal
+se elimina .lock
+detener cronometro

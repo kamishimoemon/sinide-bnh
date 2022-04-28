@@ -3,7 +3,7 @@
 ## TODOS:
  - [X] Add a timer
  - [ ] Read configuration from .ini file
- - [ ] Processes should run one at a time
+ - [X] Processes should run one at a time
  - [ ] At the start of process, it's state should change to "on analysis"
  - [ ] Create temporal table
  - [ ] Create errors temporal table

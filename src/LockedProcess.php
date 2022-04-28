@@ -1,7 +1,7 @@
 <?php
 namespace sinide\bnh;
 
-use sinide\bnh\io\LockFile;
+use sinide\bnh\io\File;
 use sinide\bnh\exception\ProcessAlreadyRunning;
 
 class LockedProcess
@@ -10,14 +10,25 @@ class LockedProcess
 	private $process;
 	private $lockFile;
 
-	public function __construct (LockFile $lockFile, Process $process)
+	public function __construct (Process $process, File $lockFile)
 	{
-		$this->lockFile = $lockFile;
 		$this->process = $process;
+		$this->lockFile = $lockFile;
 	}
 
 	public function run (): void
 	{
-		$this->lockFile->lock([$this->process, 'run']);
+		if ($this->lockFile->exists()) throw new ProcessAlreadyRunning();
+
+		$this->lockFile->create();
+
+		try
+		{
+			$this->process->run();
+		}
+		finally
+		{
+			$this->lockFile->delete();
+		}
 	}
 }
